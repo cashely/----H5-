@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>微信摇一摇</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+    <script>
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 6.4 + 'px';
+
+    </script>
+        <script src="js/jquery-1.11.1.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        html {
+            font-size: 50px;
+        }
+        
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        .bg {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            background-color: #f08300;
+            background-image: url(images/bg.jpg);
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        }
+        
+        .bg > div {
+            position: absolute;
+        }
+        
+        .icons a,.buttons a {
+            position: absolute;
+            top: 0;
+            display: inline-block;
+            
+        }
+        .icons a img{
+            transform: rotateY(-360deg) scaleX(0);
+            -webkit-transform: rotateY(-360deg) scaleX(0);
+            opacity: 0;
+            
+        }
+        .bg img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+        .shark.active {
+            transform-origin: center bottom;
+            -webkit-transform-origin: center bottom;
+            animation: 'shark' 1.5s infinite;
+            -webkit-animation: 'shark' 1.5s infinite;
+        }
+        .a.active img,.b.active img{
+            transform: rotateY(0deg) scaleX(1);
+            -webkit-transform: rotateY(0deg) scaleX(1);
+            opacity: 1;
+            transition: all .5s .5s;
+            -webkit-transition: all .5s .5s;
+        }
+        @keyframes shark {
+            0% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(45deg)
+            }
+            50% {
+                transform: rotate(0deg);
+            }
+            75% {
+                transform: rotate(45deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+        
+        @-webkit-keyframes shark {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            25% {
+                -webkit-transform: rotate(30deg)
+            }
+            50% {
+                -webkit-transform: rotate(0deg);
+            }
+            75% {
+                -webkit-transform: rotate(30deg);
+            }
+            100% {
+                -webkit-transform: rotate(0deg);
+            }
+        }
+
+    </style>
+    <script src="js/jquery-1.11.1.min.js"></script>
+</head>
+
+<body>
+    <div class="mp3" style="display:none">
+            <audio controls id="miusc" src="5018.wav">
+            </audio>
+        sdsad
+        </div>
+    <div class="bg">
+        <div class="shark" style="left:2.47rem;top:0.07rem;width:1.25rem;">
+            <img src="images/shark.png" />
+        </div>
+        <div class="buttons" style="top:0.21rem;">
+            <a href="#" style="left:4.01rem;width:0.99rem;"><img src="images/m.png"/></a>
+            <a href="#" style="left:5.86rem;width:0.49rem;"><img src="images/r.png"/></a>
+            <a href="#" style="left:5.08rem;width:0.68rem;"><img src="images/s.png"/></a>
+        </div>
+        <div class="icons" style="top:7.27rem;">
+            <a class="a" href="http://s.click.taobao.com/t?e=m%3D2%26s%3DGC%2BI1%2BJ0EaocQipKwQzePCperVdZeJviK7Vc7tFgwiFRAdhuF14FMaRDOzpcsD79J1gyddu7kN9dYsa%2BKM7K2hqezTOjBy9clH8Xcxsf4EaAn2tNM%2FGK4I7LAa3DUrM2zt5vEinufIW9AmARIwX9K5xNLLIwPQT2naYpFBIfC%2F2cC515GCGD2BP5P2V980tUyAVwo1dLVyBP37MhSQONCSlc%2FSzZYUKBzuICnkQ0X6JdITvXwTxvKFx%2FkB%2FXuumO" style="left:1.32rem; width:1.33rem;"><img src="images/icon1.png" /></a>
+            <a class="b" href="http://s.click.taobao.com/t?e=m%3D2%26s%3DbH%2B05qgOWHAcQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAp4m12Tr0DDmBdzZorqN0KH6bSoaPejHNb%2FB4u9bF72N1MpgR27mCRIcYTWvucg%2FwVW00662PG2K8Cm%2FwUl4ESHcHtRpEUy6RNq0RHKk55eIg32mOAh%2FApVbmmsujxxDvHIry%2FjBuJAmb9Ax5Feza8qpdT2fOhe9TcV80rMhQJBm" style="left:3.8rem; width:1.32rem;"><img src="images/icon2.png" /></a>
+        </div>
+        
+    </div>
+
+    <script>
+        $(document).click(function(){
+            $('.shark,.icons a').addClass('active');
+        });
+        $('.shark').addClass('active');
+        var SHAKE_THRESHOLD = 7000;
+        var last_update = 0;
+        var x, y, z, last_x = 0,
+            last_y = 0,
+            last_z = 0;
+        var miusc = document.getElementById('miusc');
+        function deviceMotionHandler(eventData) {
+            var acceleration = eventData.accelerationIncludingGravity;
+            var curTime = new Date().getTime();
+            if ((curTime - last_update) > 10) {
+                var diffTime = curTime - last_update;
+                last_update = curTime;
+                x = acceleration.x;
+                y = acceleration.y;
+                z = acceleration.z;
+                var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+                    $('.icons a').addClass('active');
+
+                    setTimeout(function() {
+                        miusc.play();
+                    }, 1000);
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', deviceMotionHandler, false);
+        } else {
+            document.getElementById("dmEvent").innerHTML = "Not supported on your device."
+        }
+
+    </script>
+</body>
+
+</html>
